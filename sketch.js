@@ -25,6 +25,14 @@ function setup(){ // todas as configuraçoes dos objetos
   ball = createSprite(440,497, 10,10);
   ball.addImage(ballimg);
   ball.scale = 0.5
+
+  pl = createSprite(436,527,20,20);
+  pl.addAnimation("stop", stoping);
+  pl.scale = 0.5;
+  pl.addAnimation("run_r", run_r);
+   pl.addAnimation("run_l", run_l);
+   pl.addAnimation("bot1",bot1);
+   pl.addAnimation("bot2",bot2);
 }
 
 function draw(){
@@ -37,11 +45,23 @@ function draw(){
 
 function controle(){
   if (keyDown("space")){
-    ball.velocityY = -3;
+    ball.velocityY = 3;
     ball.velocityX = 2;
   pc.velocityX = 3;
   pc.changeAnimation("run_r", run_r)
   }
+  if(keyDown("right")){
+    pl.velocityX = 3
+    pl.changeAnimation("run_r", run_r)
+  }
+  if(keyDown("left")){
+    pl.velocityX = -3
+    pl.changeAnimation("run_l", run_l)
+  }
+  if(ball.bounceOff(pl)){
+    pl.changeAnimation("bot1",bot1)
+  }
+  
 }
 
 ;
