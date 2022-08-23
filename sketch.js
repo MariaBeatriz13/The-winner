@@ -71,7 +71,10 @@ function setup(){ // todas as configuraçoes dos objetos
 function draw(){
   background(bk);
   drawSprites(); 
- 
+  textSize(20)
+  fill("white")
+ text(scorepc,135,106)
+ text(scorepl,143,53)
   if(estado === "jogar"){
     paredes ();
     controle();
@@ -143,8 +146,13 @@ function controle(){
     pc.velocityX = ball.velocityX
   }
 
-  if (ball.y < linhapc.y){
+  if ((ball.y < linhapc.y) || (ball.y > linhapl.y)){
      estado = "fim"
+     if(ball.y < linhapc.y){
+      scorepl++ 
+     } else{
+      scorepc++
+     }
   }
   
 }
