@@ -71,7 +71,7 @@ function draw(){
 
 function controle(){
   if (keyDown("space")){
-    ball.velocityY = -5;
+    ball.velocityY = 4;
     ball.velocityX = 4;
     pc.velocityX = 3
     pc.changeAnimation("run_r", run_r);
@@ -89,10 +89,28 @@ function controle(){
 
   if(ball.bounceOff(pl)){
     pl.changeAnimation("bot1",bot1);
-    
+    setTimeout(() => {
+      pl.changeAnimation("stop",stoping);
+      pl.velocityX = 0
+    },300);
   }
 
- 
+  if(ball.bounceOff(pc)){
+    pc.changeAnimation("bot1",bot1);
+    ball.velocityY = -4
+    setTimeout(() => {
+      pc.changeAnimation("stop",stoping);
+     // pc .velocityX = 0
+    },300);
+  }
+  if(ball.velocityX < 0){
+    pc.changeAnimation("run_l", run_l);
+    pc.velocityX = -3
+  }
+  if(ball.velocityX > 0){
+    pc.changeAnimation("run_r", run_r);
+    pc.velocityX = 3
+  }
   
 }
 
