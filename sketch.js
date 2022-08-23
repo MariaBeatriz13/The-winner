@@ -4,7 +4,11 @@ var pc;
 var ball, ballimg;
 var pl;
 var p1,p2,p3,p4;
-var area1, area2
+var area1, area2;
+var estado = "jogar";
+var linhapc, linhapl;
+var scorepc=0;
+var scorepl=0;
 
 function preload(){ // função que carregar todas as imagens e animações
   bk = loadImage("assets/bk.png");
@@ -25,8 +29,8 @@ function setup(){ // todas as configuraçoes dos objetos
   p2 = createSprite (170,85,10,100)
   p3 = createSprite (31,500,10,100)
   p4 = createSprite (830,500,10,100)
-  area1= createSprite (411,200, 500,50)
-  area2= createSprite (411,384, 500,100)
+  // area1= createSprite (411,200, 500,50)
+  // area2= createSprite (411,384, 500,100)
 
   pc = createSprite(401,125,20,20);
   pc.addAnimation("stop", stoping);
@@ -51,29 +55,52 @@ function setup(){ // todas as configuraçoes dos objetos
   pc.debug = true;
   pl.debug = true;
   ball.debug = true;
-  area1.debug = true;
-  area2.debug = true;
+  // area1.debug = true; 
+  // area2.debug = true;
   
   ball.setCollider("circle", 0,0,20)
-  area1.setCollider("rectangle", 0,0,500,0.1 )
-  area2.setCollider("rectangle", 0,0,500,0.1)
+ pc.setCollider("rectangle", 0,0,200,0.1 )
+  // area1.setCollider("rectangle", 0,0,500,0.1 )
+  // area2.setCollider("rectangle", 0,0,500,0.1)
+
+  linhapc = createSprite(423,130,500,2)
+  linhapl = createSprite(451,538,800,2)
 
 }
 
 function draw(){
   background(bk);
   drawSprites(); 
-  paredes ()
-  controle();
+ 
+  if(estado === "jogar"){
+    paredes ();
+    controle();
+  }
+  else if (estado === "fim"){
+     ball.x = 440;
+     ball.y = 312;
+     pc.x = 401;
+     pc.y = 125;
+     pc.velocityX =0;
+     pl.x = 436;
+     pl.y = 527;
+     pl.velocityX =0;
+     
+     if(keyDown("space")){
+      estado = "jogar"
+     }
+     
+  }
   fill ("black");
   text (mouseX + ", " + mouseY, mouseX, mouseY);
+//   console.log(ball.velocityY)
 }
 
 function controle(){
   if (keyDown("space")){
     ball.velocityY = 4;
     ball.velocityX = 4;
-    pc.velocityX = 3
+    pc.velocityX = -5
     pc.changeAnimation("run_r", run_r);
   }
 
@@ -89,6 +116,8 @@ function controle(){
 
   if(ball.bounceOff(pl)){
     pl.changeAnimation("bot1",bot1);
+    ball.velocityY -= 6;
+    ball.velocityX = random(-4,5)
     setTimeout(() => {
       pl.changeAnimation("stop",stoping);
       pl.velocityX = 0
@@ -97,19 +126,25 @@ function controle(){
 
   if(ball.bounceOff(pc)){
     pc.changeAnimation("bot1",bot1);
-    ball.velocityY = -4
+    ball.velocityY -= 6;
+    ball.velocityX = random(-10,10)
     setTimeout(() => {
       pc.changeAnimation("stop",stoping);
-     // pc .velocityX = 0
+      pc .velocityX = 0
     },300);
   }
+  
   if(ball.velocityX < 0){
     pc.changeAnimation("run_l", run_l);
-    pc.velocityX = -3
+    pc.velocityX = ball.velocityX
   }
   if(ball.velocityX > 0){
-    pc.changeAnimation("run_r", run_r);
-    pc.velocityX = 3
+    pc.changeAnimation("run_r", run_r) ;
+    pc.velocityX = ball.velocityX
+  }
+
+  if (ball.y < linhapc.y){
+     estado = "fim"
   }
   
 }
@@ -119,7 +154,5 @@ function paredes (){
    pc.collide(p1)
    pc.collide(p2)
    pl.collide(p3)
-   pl.collide(p4) 
-
-   
+   pl.collide(p4)    
 } 
