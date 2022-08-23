@@ -20,6 +20,7 @@ function setup(){ // todas as configuraçoes dos objetos
   createCanvas(900,600);
   
   //paredes
+ 
   p1 = createSprite (650,85,10,100)
   p2 = createSprite (170,85,10,100)
   p3 = createSprite (31,500,10,100)
@@ -70,7 +71,7 @@ function draw(){
 
 function controle(){
   if (keyDown("space")){
-    ball.velocityY = 4;
+    ball.velocityY = -5;
     ball.velocityX = 4;
     pc.velocityX = 3
     pc.changeAnimation("run_r", run_r);
